@@ -4,6 +4,8 @@ class Constants {
     public static SERVICE_NAME = "Service Name Here";
 
     public static Production = "production";
+
+    public static Development = "development";
 }
 
 export default Constants;

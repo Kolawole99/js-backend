@@ -42,10 +42,16 @@ await Promise.all([
   // Postgres.connect()
 ]); 
 
-
 import App from './app/app.js'
+import Constants from "./config/constants.js";
+import Environment from "./config/env.js";
+import Logger from "./utils/logger.js";
 
 Bun.serve({
   fetch: App.fetch,
-  port: process.env.PORT || 3000
+  port: Environment.PORT || 3000
 })
+
+if (Environment.APP_ENV === Constants.Development) {
+  Logger.info("Server running on port" + Environment.PORT)
+}

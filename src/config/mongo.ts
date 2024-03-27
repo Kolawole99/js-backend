@@ -20,7 +20,7 @@ class Mongo {
             Logger.info("Creating new MongoDB connection");
 
             mongoose.set("strictQuery", false);
-            this.client = await mongoose.connect(Environment.LOCAL_MONGO_URL, {
+            this.client = await mongoose.connect(Environment.MONGO_URL, {
                 connectTimeoutMS: Environment.MONGO_TIMEOUT,
                 serverSelectionTimeoutMS: Environment.MONGO_TIMEOUT,
                 socketTimeoutMS: Environment.MONGO_TIMEOUT

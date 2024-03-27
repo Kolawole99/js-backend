@@ -3,9 +3,13 @@ import os from "os";
 const {
     APP_ENV,
     NODE_ENV,
+    PORT,
 
     MONGO_TIMEOUT,
-    LOCAL_MONGO_URL,
+    MONGO_URL,
+    
+    POSTGRES_URL,
+    POSTGRES_POOL_SIZE,
 
     OTEL_HOST,
     LOGS_PORT,
@@ -21,7 +25,13 @@ class Environment {
 
     public static NODE_ENV: string = NODE_ENV!;
 
-    public static LOCAL_MONGO_URL: string = LOCAL_MONGO_URL!;
+    public static PORT: string = PORT!;
+
+    public static POSTGRES_URL: string = POSTGRES_URL!;
+
+    public static POSTGRES_POOL_SIZE: number = parseInt(POSTGRES_POOL_SIZE!, 10);
+
+    public static MONGO_URL: string = MONGO_URL!;
 
     public static MONGO_TIMEOUT: number = parseInt(MONGO_TIMEOUT!, 10);
 
