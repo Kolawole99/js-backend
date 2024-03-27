@@ -1,11 +1,12 @@
-class Constants {
-    public static APP_NAME = "App Name Here";
+import os from "node:os";
 
-    public static SERVICE_NAME = "Service Name Here";
-
-    public static Production = "production";
-
-    public static Development = "development";
-}
+const Constants = {
+	APP_NAME: "App Name Here",
+	SERVICE_NAME: "Service Name Here",
+	Production: "production",
+	Development: "development",
+	HOSTNAME: os.hostname(),
+	PID: process.pid.toString(),
+};
 
 export default Constants;

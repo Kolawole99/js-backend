@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "db:generate": "drizzle-kit generate:pg --schema ./src/app/db/schema.ts --out=./src/app/db/migrations",
-    "db:migrate": "bun run ./src/app/db/migrate.ts"
+    "db:migrate": "bun run ./src/app/db/migrate.ts",
+    "format": "bunx @biomejs/biome format ./src --write",
+    "lint": "bunx @biomejs/biome lint ./src",
+    "start": "bun run src/index.ts"
   },
   "dependencies": {
     "@opentelemetry/auto-instrumentations-node": "^0.43.0",
@@ -22,9 +25,11 @@
     "mongoose": "^8.2.3",
     "postgres": "^3.4.4",
     "winston": "^3.13.0",
-    "winston-logstash": "^1.2.1"
+    "winston-logstash": "^1.2.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.6.3",
     "@types/bun": "latest",
     "drizzle-kit": "^0.20.14"
   }
