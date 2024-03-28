@@ -1,8 +1,19 @@
 import * as z from "zod";
 
+const NODE_ENV_VALUES = ["development", "production"] as const;
+type NodeEnv = (typeof NODE_ENV_VALUES)[number];
+
+const APP_ENV_VALUES = [
+	"localhost",
+	"develop",
+	"staging",
+	"production",
+] as const;
+type AppEnv = (typeof APP_ENV_VALUES)[number];
+
 const zodEnv = z.object({
-	APP_ENV: z.string(),
-	NODE_ENV: z.string(),
+	NODE_ENV: z.enum(NODE_ENV_VALUES),
+	APP_ENV: z.enum(APP_ENV_VALUES),
 	PORT: z.string(),
 	POSTGRES_URL: z.string(),
 	POSTGRES_POOL_SIZE: z.number(),
@@ -30,8 +41,8 @@ const Environment: EnvironmentType & { getAndValidate: () => void } = {
 			}
 		}
 	},
-	APP_ENV: process.env.APP_ENV as string,
-	NODE_ENV: process.env.NODE_ENV as string,
+	NODE_ENV: process.env.NODE_ENV as NodeEnv,
+	APP_ENV: process.env.APP_ENV as AppEnv,
 	PORT: process.env.PORT as string,
 	POSTGRES_URL: process.env.POSTGRES_URL as string,
 	POSTGRES_POOL_SIZE: Number.parseInt(
