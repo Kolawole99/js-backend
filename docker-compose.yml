@@ -3,28 +3,16 @@ version: "3.9"
 name: "bun-hono-template"
 
 services:
-  cockroachdb:
-    image: "cockroachdb/cockroach:latest-v22.2"
-    container_name: cockroachdb
-    command: "start-single-node --insecure"
-    restart: "always"
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:8080/health?ready=1"
-        ]
-      interval: "10s"
-      timeout: "30s"
-      retries: 5
-      start_period: "20s"
+  postgres:
+    image: postgres:16.2-alpine
     ports:
-      - "9090:8080"
-      - "26257:26257"
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=root
+      - POSTGRES_DB=bunhonotemplate
     volumes:
-      - "./docker/cockroachdb:/cockroach/cockroach-data"
+      - ./docker/postgres:/var/lib/postgresql/data
 
   mongodb:
     image: mongo:7.0.8-rc0
