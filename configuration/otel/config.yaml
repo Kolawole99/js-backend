@@ -1,0 +1,39 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+
+exporters:
+  logging:
+    verbosity: basic
+
+  otlphttp/openobserve:
+    endpoint: http://openobserve:5080/api/default/
+    headers:
+      Authorization: Basic cm9vdEBidW5ob25vdGVtcGxhdGUuY29tOnYyazl3YlBqbXNadDV0VEM=
+      stream-name: default
+
+extensions:
+  health_check:
+  pprof:
+  zpages:
+
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlphttp/openobserve]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlphttp/openobserve]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlphttp/openobserve]

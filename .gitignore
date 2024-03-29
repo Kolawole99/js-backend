@@ -92,3 +92,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+
+# Docker config Files
+docker/

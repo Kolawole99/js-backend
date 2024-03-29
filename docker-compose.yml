@@ -1,0 +1,69 @@
+version: "3.9"
+
+name: "bun-hono-template"
+
+services:
+  cockroachdb:
+    image: "cockroachdb/cockroach:latest-v22.2"
+    container_name: cockroachdb
+    command: "start-single-node --insecure"
+    restart: "always"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:8080/health?ready=1"
+        ]
+      interval: "10s"
+      timeout: "30s"
+      retries: 5
+      start_period: "20s"
+    ports:
+      - "9090:8080"
+      - "26257:26257"
+    volumes:
+      - "./docker/cockroachdb:/cockroach/cockroach-data"
+
+  mongodb:
+    image: mongo:7.0.8-rc0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ./docker/mongodb:/data/db
+
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:v0.9.1
+    container_name: openobserve
+    restart: always
+    ports:
+      - 5080:5080
+    environment:
+      - ZO_DATA_DIR=/data
+      - ZO_ROOT_USER_EMAIL=root@bunhonotemplate.com
+      - ZO_ROOT_USER_PASSWORD=Complexpass#123
+    volumes:
+      - ./docker/openobserve/data:/data/db
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.97.0
+    container_name: otel-collector
+    restart: always
+    depends_on:
+      - openobserve
+    ports:
+      - 1888:1888 # pprof extension
+      - 55679:55679 # zpages extension
+      - 13133:13133 # health_check extension
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP http receiver
+    volumes:
+      - ./configuration/otel/config.yaml:/etc/otelcol-contrib/config.yaml
+
+networks:
+  default:
+    name: bunhonotemplate-com

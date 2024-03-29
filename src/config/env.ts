@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+import { zodInputStringToNumberPipe } from "../utils/validator.js";
+
 const NODE_ENV_VALUES = ["development", "production"] as const;
 type NodeEnv = (typeof NODE_ENV_VALUES)[number];
 
@@ -11,17 +13,25 @@ const APP_ENV_VALUES = [
 ] as const;
 type AppEnv = (typeof APP_ENV_VALUES)[number];
 
+const defaultMinimumStringLength = 6;
 const zodEnv = z.object({
 	NODE_ENV: z.enum(NODE_ENV_VALUES),
 	APP_ENV: z.enum(APP_ENV_VALUES),
-	PORT: z.string(),
-	POSTGRES_URL: z.string(),
-	POSTGRES_POOL_SIZE: z.number(),
-	MONGO_URL: z.string(),
-	MONGO_TIMEOUT: z.number(),
-	OTEL_HOST: z.string(),
-	LOGS_PORT: z.number(),
-	METRICS_AND_TRACES_PORT: z.string(),
+	PORT: zodInputStringToNumberPipe(z.number().positive("Invalid Port")),
+	POSTGRES_URL: z.string().min(defaultMinimumStringLength),
+	POSTGRES_POOL_SIZE: zodInputStringToNumberPipe(
+		z.number().positive("Invalid Postgress Pool Size"),
+	),
+	MONGO_URL: z.string().min(defaultMinimumStringLength),
+	MONGO_TIMEOUT: zodInputStringToNumberPipe(
+		z.number().positive("Invalid Mongo Timeout"),
+	),
+	OTEL_HOST: z.string().min(defaultMinimumStringLength),
+	OTEL_EXPORTER_OTLP_LOGS_PROTOCOL: z.string().min(4).max(4),
+	OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: z.string().min(defaultMinimumStringLength),
+	METRICS_AND_TRACES_PORT: zodInputStringToNumberPipe(
+		z.number().positive("Invalid Metrics and Traces Port"),
+	),
 });
 type EnvironmentType = z.infer<typeof zodEnv>;
 
@@ -52,7 +62,8 @@ const Environment: EnvironmentType & { getAndValidate: () => void } = {
 	MONGO_URL: process.env.MONGO_URL as string,
 	MONGO_TIMEOUT: Number.parseInt(process.env.MONGO_TIMEOUT as string, 10),
 	OTEL_HOST: process.env.OTEL_HOST as string,
-	LOGS_PORT: Number.parseInt(process.env.LOGS_PORT as string, 10),
+	OTEL_EXPORTER_OTLP_LOGS_PROTOCOL: process.env.POSTGRES_URL as string,
+	OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: process.env.POSTGRES_URL as string,
 	METRICS_AND_TRACES_PORT: process.env.METRICS_AND_TRACES_PORT as string,
 };
 
