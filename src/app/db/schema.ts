@@ -8,7 +8,10 @@ export const users = pgTable(
 		name: text("name").notNull(),
 		email: text("email").notNull(),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
-		updatedAt: timestamp("updated_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at")
+			.notNull()
+			.defaultNow()
+			.$onUpdateFn(() => new Date(Date.now())),
 	},
 	(users) => ({
 		emailIdx: index("email_idx").on(users.email),
@@ -26,7 +29,10 @@ export const posts = pgTable("posts", {
 		.notNull()
 		.references(() => users.id),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at")
+		.notNull()
+		.defaultNow()
+		.$onUpdateFn(() => new Date(Date.now())),
 });
 export const postsRelations = relations(posts, ({ one, many }) => ({
 	user: one(users, { fields: [posts.userId], references: [users.id] }),
@@ -39,7 +45,10 @@ export const comments = pgTable("comments", {
 	userId: uuid("user_id").references(() => users.id),
 	text: text("text").notNull(),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at")
+		.notNull()
+		.defaultNow()
+		.$onUpdateFn(() => new Date(Date.now())),
 });
 export const commentsRelations = relations(comments, ({ one }) => ({
 	post: one(posts, { fields: [comments.postId], references: [posts.id] }),

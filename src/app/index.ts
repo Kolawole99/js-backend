@@ -5,14 +5,14 @@ import { BuildSuccessResponse } from "../utils/http.js";
 import adminRoutes from "./admin/index.js";
 import customerRoutes from "./customer/index.js";
 
-const app = new Hono({ strict: true });
+const app = new Hono({ strict: true }).basePath("/v1");
 
 app.use(logger());
 
 app.get("/", (c) => {
 	return c.json(BuildSuccessResponse({ message: "App Running", payload: {} }));
 });
-app.route("/admin", adminRoutes);
-app.route("/customer", customerRoutes);
+app.route("/", adminRoutes);
+app.route("/", customerRoutes);
 
 export default app;
