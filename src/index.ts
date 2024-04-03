@@ -48,8 +48,6 @@ Bun.serve({
 	port: Environment.PORT,
 });
 
-if (Environment.NODE_ENV === Constants.Development) {
-	Logger.info(`Server running on port http://localhost:${Environment.PORT}`);
-} else {
-	Logger.info(`Production deployment is running on port ${Environment.PORT}`);
-}
+Logger.info(
+	`${Enviroment.APP_ENV} deployment is running on port ${Environment.PORT}`,
+);
