@@ -14,16 +14,18 @@ Enviroment.getAndValidate();
  * for external analysis
  */
 import OpenTelemetry from "./config/otel.js";
+import Logger from "./utils/logger.js";
 OpenTelemetry.start();
 
 // Gracefully shut down the SDK on process exit
-const { log } = console;
 const shutdownEvents = ["SIGINT", "SIGTERM"];
 for (const signal of shutdownEvents) {
 	process.on(signal, () => {
 		OpenTelemetry.shutdown()
-			.then(() => log("Tracing terminated"))
-			.catch((error: unknown) => log("Error terminating tracing", error))
+			.then(() => Logger.info("OpenTelemetry terminated"))
+			.catch((error: unknown) =>
+				Logger.error(error, "Error terminating OpenTelemetry"),
+			)
 			.finally(() => process.exit(0));
 	});
 }
@@ -39,9 +41,7 @@ require("./config/postgres.js");
 await Mongo.connect();
 
 import App from "./app/index.js";
-import Constants from "./config/constants.js";
 import Environment from "./config/env.js";
-import Logger from "./utils/logger.js";
 
 Bun.serve({
 	fetch: App.fetch,

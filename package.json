@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "db:generate": "drizzle-kit generate:pg --schema ./src/app/db/schema.ts --out=./src/app/db/migrations",
-    "db:migrate": "bun run ./src/app/db/migrate.ts",
+    "db:generate": "drizzle-kit generate:pg --schema ./src/db/schema.ts --out=./src/db/migrations",
+    "db:migrate": "bun run ./src/db/migrate.ts",
     "format": "bunx @biomejs/biome format ./src --write",
     "lint": "bunx @biomejs/biome lint ./src",
     "start": "bun run src/index.ts"
