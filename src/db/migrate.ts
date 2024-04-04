@@ -8,7 +8,7 @@ const db = drizzle(client);
 
 const main = async () => {
 	try {
-		await migrate(db, { migrationsFolder: "src/app/db/migrations" });
+		await migrate(db, { migrationsFolder: "src/db/migrations" });
 		await client.end();
 
 		console.log("Migration successful");
