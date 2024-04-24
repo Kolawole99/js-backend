@@ -4,8 +4,8 @@
  * This will enable us to read application secrtes by environments
  * This also caches the secrets in memory and exports them in the Environment
  */
-import Enviroment from "./config/env.js";
-Enviroment.getAndValidate();
+import Environment from "./config/env.js";
+Environment.getAndValidate();
 
 /**
  * Setup OpenTelemetry
@@ -41,7 +41,6 @@ require("./config/postgres.js");
 await Mongo.connect();
 
 import App from "./app/index.js";
-import Environment from "./config/env.js";
 
 Bun.serve({
 	fetch: App.fetch,
@@ -49,5 +48,5 @@ Bun.serve({
 });
 
 Logger.info(
-	`${Enviroment.APP_ENV} deployment is running on port ${Environment.PORT}`,
+	`${Environment.APP_ENV} deployment is running on port ${Environment.PORT}`,
 );

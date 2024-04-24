@@ -1,11 +1,15 @@
 {
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "lib": ["esnext"],
-    "module": "nodenext",
-    "target": "ESNext",
-    "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
-  }
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"lib": ["esnext"],
+		"module": "nodenext",
+		"target": "ESNext",
+		"strict": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "hono/jsx"
+	},
+	"exclude": ["node_modules", "**/*.spec.ts"],
+	"include": ["src/"]
 }
