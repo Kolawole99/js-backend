@@ -1,4 +1,4 @@
-# Backend Temlate
+# Backend Template
 
 To install dependencies:
 ```sh
