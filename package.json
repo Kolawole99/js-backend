@@ -10,7 +10,7 @@
 		"db:migrate": "bun run ./src/db/migrate.ts",
 		"lint": "bunx @biomejs/biome lint ./src",
 		"format": "bunx @biomejs/biome format ./src --write",
-		"build": "bun build ./src/ --outdir ./dist",
+		"build": "bun build src/index.ts --outdir ./dist --target bun",
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {

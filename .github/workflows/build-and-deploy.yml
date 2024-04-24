@@ -1,0 +1,68 @@
+# This workflow is run on main, staging and develop branch after code is merged
+
+name: Deploy Branch
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "staging", "develop" ]
+
+jobs:  
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: v1.0.5
+
+      - name: Install Dependencies
+        run: |
+          bun install
+
+      - name: Lint Application
+        run: |
+          bun run lint
+
+      - name: Test Application
+        run: |
+          bun run test
+
+      - name: Build Application Code
+        run: |
+          bun run build
+
+      - name: Build Application Container
+        run: |
+          echo "Building container image"
+
+      - name: Require Staging Approval
+        if: github.ref == 'refs/heads/staging'
+        uses: trstringer/manual-approval@v1
+        timeout-minutes: 20
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: Kolawole99
+          minimum-approvals: 1
+          issue-title: "Deploying Frontend to Staging"
+          issue-body: "Please approve or deny the deployment of this new version to the staging environment"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
+
+      - name: Require Production Approval
+        if: github.ref == 'refs/heads/main'
+        uses: trstringer/manual-approval@v1
+        timeout-minutes: 20
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: Kolawole99
+          minimum-approvals: 1
+          issue-title: "Deploying Frontend to Production"
+          issue-body: "Please approve or deny the deployment of this new version to the production environment"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''

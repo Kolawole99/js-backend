@@ -1,0 +1,38 @@
+# This workflow is run on any branch that opens a PR to merge into main, staging or develop
+# This is basically the Continuous Integration Workflow
+
+name: Working Branch Verification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ "main", "staging", "develop" ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: v1.0.5
+
+      - name: Install Dependencies
+        run: |
+          bun install
+
+      - name: Lint Application
+        run: |
+          bun run lint
+
+      - name: Test Application
+        run: |
+          bun run test
+
+      - name: Build Application
+        run: |
+          bun run build
