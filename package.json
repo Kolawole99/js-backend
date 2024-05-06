@@ -15,7 +15,7 @@
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
-		"@opentelemetry/auto-instrumentations-node": "^0.43.0",
+		"@opentelemetry/auto-instrumentations-node": "^0.46.0",
 		"@opentelemetry/exporter-metrics-otlp-grpc": "^0.49.1",
 		"@opentelemetry/exporter-trace-otlp-grpc": "^0.49.1",
 		"@opentelemetry/resources": "^1.22.0",
