@@ -36,7 +36,7 @@
 		"@commitlint/cli": "^19.3.0",
 		"@commitlint/config-conventional": "^19.2.2",
 		"@types/bun": "latest",
-		"drizzle-kit": "^0.20.14",
+		"drizzle-kit": "^0.21.4",
 		"husky": "^9.0.11",
 		"typescript": "^5.4.5"
 	}
